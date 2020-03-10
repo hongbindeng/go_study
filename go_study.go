@@ -2,52 +2,22 @@ package main
 
 import (
 	"fmt"
-	"net/url"
-	"os"
-	"strings"
+	"math"
 )
 
-var pc [256]byte
+type Point struct{ X, Y float64 }
 
-func pcInit() {
-	for i := range pc {
-		pc[i] = pc[i/2] + byte(i&1)
-	}
+func Distance(p, q Point) float64 {
+	return math.Hypot(q.X-p.X, q.Y-p.Y)
 }
 
-func PopCount(x uint64) int {
-	return int(pc[byte(x>>(0*8))] +
-		pc[byte(x>>(1*8))] +
-		pc[byte(x>>(2*8))] +
-		pc[byte(x>>(3*8))] +
-		pc[byte(x>>(4*8))] +
-		pc[byte(x>>(5*8))] +
-		pc[byte(x>>(6*8))] +
-		pc[byte(x>>(7*8))])
-}
-
-func SprintTestJon(terms []string) {
-	q := url.QueryEscape(strings.Join(terms, " "))
-	fmt.Println(q)
+func (p Point) Distance(q Point) float64 {
+	return math.Hypot(q.X-p.X, q.Y-p.Y)
 }
 
 func main() {
-	var valueTest uint64
-	valueTest = 1234
-	pcInit()
-	intTest := PopCount(valueTest)
-	fmt.Println(intTest)
-	fmt.Println(pc)
-	SprintTestJon(os.Args[1:])
-	// var s, seq string
-	// //var test_arg string
-	// silce := make([]int, 3, 5)
-	// test_arg := silce[1:]
-	// fmt.Println(test_arg)
-
-	// for i := 0; i < len(os.Args); i++ {
-	// 	s += seq + os.Args[i]
-	// 	seq += " "
-	// }
-	//fmt.Println(s)
+	p := Point{1, 2}
+	q := Point{4, 7}
+	fmt.Println(Distance(p, q))
+	fmt.Println(p.Distance(q))
 }
